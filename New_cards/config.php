@@ -1,9 +1,14 @@
 <?php
 // Database configuration
-$host = 'db5019002075.hosting-data.io';
+// $host = 'db5019002075.hosting-data.io';
+// $dbname = 'dbs14962592';
+// $username = 'dbu4026357'; // Default for WAMP
+// $password = '77143Ray!@12345#123$%^7!088989'; // Default for WAMP
+
+$host = 'localhost';
 $dbname = 'dbs14962592';
-$username = 'dbu4026357'; // Default for WAMP
-$password = '77143Ray!@12345#123$%^7!088989'; // Default for WAMP
+$username = 'root';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -13,7 +18,8 @@ try {
 }
 
 // Base URL for QR code links
-$base_url = 'http://localhost/virtual_id2/final_virtual_id/New%20Cards/';
+// $base_url = 'http://localhost/virtual_id2/final_virtual_id/New%20Cards/';
+$base_url = 'http://localhost/raymond';
 
 // Function to generate unique ID
 function generateUniqueId() {
