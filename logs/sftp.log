@@ -1,0 +1,24 @@
+Nov 18 00:22:26 10.71.60.0 a1163792 Connection from 10.71.60.0 port 10774 on 74.208.59.93 port 22 rdomain ""
+Nov 18 00:22:27 10.71.60.0 a1163792 Accepted password for a1163792 from 10.71.60.0 port 10774 ssh2
+Nov 18 00:22:28 10.71.60.0 a1163792 Starting session: subsystem 'sftp' for a1163792 from 10.71.60.0 port 10774 id 0
+Nov 18 00:22:28 10.71.60.0 a1163792 session opened for local user a1163792 from [10.71.60.0]
+Nov 18 00:24:10 10.71.60.0 a1163792 open "/New_cards/view_all_cards.php" flags READ mode 0666
+Nov 18 00:24:10 10.71.60.0 a1163792 close "/New_cards/view_all_cards.php" bytes read 21444 written 0
+Nov 18 00:24:10 10.71.60.0 a1163792 [10.71.60.0|get|0|21444|0|0|0|2f4e65775f63617264732f766965775f616c6c5f63617264732e706870|]
+Nov 18 00:25:10 10.71.60.0 a1163792 open "/New_cards/view_all_cards.php" flags WRITE,CREATE,TRUNCATE mode 0666
+Nov 18 00:25:10 10.71.60.0 a1163792 close "/New_cards/view_all_cards.php" bytes read 0 written 21456
+Nov 18 00:25:10 10.71.60.0 a1163792 [10.71.60.0|put|0|21456|0|0|0|2f4e65775f63617264732f766965775f616c6c5f63617264732e706870|]
+Nov 18 00:30:18 10.71.60.0 a1163792 session closed for local user a1163792 from [10.71.60.0]
+Nov 18 00:30:18 10.71.60.0 a1163792 Connection closed by 10.71.60.0 port 10774
+Nov 18 03:59:25 10.71.61.0 a1168284 Connection from 10.71.61.0 port 26730 on 74.208.59.93 port 22 rdomain ""
+Nov 18 03:59:26 10.71.61.0 a1168284 Accepted password for a1168284 from 10.71.61.0 port 26730 ssh2
+Nov 18 03:59:26 10.71.61.0 a1168284 Starting session: subsystem 'sftp' for a1168284 from 10.71.61.0 port 26730 id 0
+Nov 18 03:59:26 10.71.61.0 a1168284 session opened for local user a1168284 from [10.71.61.0]
+Nov 18 04:05:40 10.71.61.0 a1168284 session closed for local user a1168284 from [10.71.61.0]
+Nov 18 04:05:40 10.71.61.0 a1168284 Connection closed by 10.71.61.0 port 26730
+Nov 18 22:05:13 10.71.61.0 a1294970 Connection from 10.71.61.0 port 26908 on 74.208.59.93 port 22 rdomain ""
+Nov 18 22:05:14 10.71.61.0 a1294970 Accepted password for a1294970 from 10.71.61.0 port 26908 ssh2
+Nov 18 22:05:15 10.71.61.0 a1294970 Starting session: subsystem 'sftp' for a1294970 from 10.71.61.0 port 26908 id 0
+Nov 18 22:05:15 10.71.61.0 a1294970 session opened for local user a1294970 from [10.71.61.0]
+Nov 18 22:07:10 10.71.61.0 a817220 Connection from 10.71.61.0 port 53600 on 74.208.59.93 port 22 rdomain ""
+Nov 18 22:07:10 10.71.61.0 a817220 Accepted password for a817220 from 10.71.61.0 port 53600 ssh2
