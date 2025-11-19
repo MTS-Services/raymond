@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Front-side layout (percentages relative to canvas size)
     const FRONT_LAYOUT = {
         // Fixed-size photo; move 5px left and 10px lower
-        photo: { xPct: 0.055, yPct: 0.275, wPx: 100, hPx: 140, radius: 12, offsetX: -5, offsetY: -45 },
+        photo: { xPct: 0.038, yPct:0.14, wPx: 100, hPx: 140, radius: 12, offsetX: -5, offsetY: -45 },
         // Names: animal +3px lower, handler +2px higher - updated font sizes
-        animal: { xPct: 0.515, yPct: 0.472, maxWidthPct: 0.36, baseFontPx: 12.47, minFontPx: 9, offsetX: 25, offsetY: -7 },
-        handler: { xPct: 0.515, yPct: 0.585, maxWidthPct: 0.36, baseFontPx: 12.47, minFontPx: 9, offsetX: 25, offsetY: -2 }
+        animal: { xPct: 0.375, yPct: 0.5, maxWidthPct: 0.36, baseFontPx: 12.47, minFontPx: 9, offsetX: 25, offsetY: -7 },
+        handler: { xPct: 0.375, yPct: 0.62, maxWidthPct: 0.36, baseFontPx: 12.47, minFontPx: 9, offsetX: 25, offsetY: -2 }
     };
 
     // Initialize
@@ -1104,17 +1104,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const { canvas, ctx, img } = canvasData;
         
+
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         // Draw background image
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
+         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
         // Redraw QR code if it exists
         if (canvasData.qrImg && canvasData.qrSize > 0) {
             const margin = canvasData.qrMargin || 10;
-            const x = canvas.width - canvasData.qrSize - margin;
-            let y = canvas.height - canvasData.qrSize - margin + 5; // 5px lower on front side
+            const x = canvas.width - canvasData.qrSize - margin-140;
+            let y = canvas.height - canvasData.qrSize - margin -35; // 5px lower on front side
             
             ctx.drawImage(canvasData.qrImg, x, y, canvasData.qrSize, canvasData.qrSize);
             console.log(`QR code redrawn at (${x}, ${y}) on combo ${cardType} front side`);
@@ -1145,9 +1146,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Use the same positioning as blue_dog for both combo cards, but with increased height
         photoX = (canvasWidth * FRONT_LAYOUT.photo.xPct) + (FRONT_LAYOUT.photo.offsetX || 0) - 5; // Moved 5px to the left
         photoY = (canvasHeight * FRONT_LAYOUT.photo.yPct) + (FRONT_LAYOUT.photo.offsetY || 0) - 7; // Moved 7px higher (2px + 5px more)
-        photoW = (FRONT_LAYOUT.photo.wPx || (canvasWidth * (FRONT_LAYOUT.photo.wPct || 0))) + 12; // Width increased by 12px
-        photoH = (FRONT_LAYOUT.photo.hPx || (canvasHeight * (FRONT_LAYOUT.photo.hPct || 0))) + 27; // Height increased by 27px (2px + 15px + 10px more)
-
+        // photoW = (FRONT_LAYOUT.photo.wPx || (canvasWidth * (FRONT_LAYOUT.photo.wPct || 0))) + 12; // Width increased by 12px
+        // photoH = (FRONT_LAYOUT.photo.hPx || (canvasHeight * (FRONT_LAYOUT.photo.hPct || 0))) + 27; // Height increased by 27px (2px + 15px + 10px more)
+        photoH = 850;
+        photoW = 650;
         // Draw the photo with cover fit preserving aspect ratio
         const imgRatio = img.width / img.height;
         const rectRatio = photoW / photoH;
@@ -1171,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Draw names on combo canvas
-    function drawNamesOnComboCanvas(canvas, ctx, cardType) {
+    async function drawNamesOnComboCanvas(canvas, ctx, cardType) {
         if (!canvas || !ctx) return;
 
         const canvasWidth = canvas.width;
@@ -1192,16 +1194,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Animal's Name - use same positioning as blue_dog
             const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 95; // Moved 95px to the left
             const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
-            
-            ctx.font = 'bold 12px Gilmer';
-            ctx.fillStyle = '#000000';
+            await document.fonts.load('bold 85.68px Gilmer'); 
+            // console.log(document.fonts.check('bold 85.68px Gilmer'));
+            ctx.font = 'bold 85.68px Gilmer';
+            ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             
-            // Auto-fit text to available width
-            const maxWidth = canvasWidth * FRONT_LAYOUT.animal.maxWidthPct;
-            const fontSize = Math.min(FRONT_LAYOUT.animal.baseFontPx, maxWidth / (ctx.measureText(animalName).width / FRONT_LAYOUT.animal.baseFontPx));
-            ctx.font = `bold ${Math.max(fontSize, FRONT_LAYOUT.animal.minFontPx)}px Gilmer`;
+            // // Auto-fit text to available width
+            // const maxWidth = canvasWidth * FRONT_LAYOUT.animal.maxWidthPct;
+            // const fontSize = Math.min(FRONT_LAYOUT.animal.baseFontPx, maxWidth / (ctx.measureText(animalName).width / FRONT_LAYOUT.animal.baseFontPx));
+            // ctx.font = `bold ${Math.max(fontSize, FRONT_LAYOUT.animal.minFontPx)}px Gilmer`;
             
             ctx.fillText(animalName, animalX, animalY);
         }
@@ -1211,35 +1214,40 @@ document.addEventListener('DOMContentLoaded', function() {
             const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 93; // Moved 93px to the left
             const handlerY = (canvasHeight * FRONT_LAYOUT.handler.yPct) + (FRONT_LAYOUT.handler.offsetY || 0) + 14; // Moved 15px lower
             
-            ctx.font = 'bold 12px Gilmer';
-            ctx.fillStyle = '#000000';
+            await document.fonts.load('bold 85.68px Gilmer'); 
+            // console.log(document.fonts.check('bold 85.68px Gilmer'));
+            ctx.font = 'bold 85.68px Gilmer';
+            ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
-            
             // Auto-fit text to available width
-            const maxWidth = canvasWidth * FRONT_LAYOUT.handler.maxWidthPct;
-            const fontSize = Math.min(FRONT_LAYOUT.handler.baseFontPx, maxWidth / (ctx.measureText(handlerName).width / FRONT_LAYOUT.handler.baseFontPx));
-            ctx.font = `bold ${Math.max(fontSize, FRONT_LAYOUT.handler.minFontPx)}px Gilmer`;
+            // const maxWidth = canvasWidth * FRONT_LAYOUT.handler.maxWidthPct;
+            // const fontSize = Math.min(FRONT_LAYOUT.handler.baseFontPx, maxWidth / (ctx.measureText(handlerName).width / FRONT_LAYOUT.handler.baseFontPx));
+            // ctx.font = `bold ${Math.max(fontSize, FRONT_LAYOUT.handler.minFontPx)}px Gilmer`;
             
             ctx.fillText(handlerName, handlerX, handlerY);
         }
 
         // Address and Telephone fields
         if (address) {
-            const addressX = (canvasWidth * 0.75) + 10 - 140; // Right side, moved 140px to the left
-            const addressY = (canvasHeight * 0.35) + 5 - 10; // Above telephone field, moved 10px higher
-            ctx.font = '10px Gilmer';
-            ctx.fillStyle = '#000000';
-            ctx.textAlign = 'left';
+            const addressX = (canvasWidth * 0.75) + 10 +80; // Right side, moved 140px to the left
+            const addressY = (canvasHeight * 0.35) + 5 - 35; // Above telephone field, moved 10px higher
+           await document.fonts.load('47.54px Gilmer'); 
+            // console.log(document.fonts.check('bold 85.68px Gilmer'));
+            ctx.font = 'bold 47.54px Gilmer';
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
             ctx.fillText(address, addressX, addressY);
         }
 
         if (telephone) {
-            const telephoneX = (canvasWidth * 0.75) + 10 - 60; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
-            const telephoneY = (canvasHeight * 0.35) + 5; // Below address field
-            ctx.font = '10px Gilmer';
-            ctx.fillStyle = '#000000';
+            const telephoneX = (canvasWidth * 0.65) -50 ; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
+            const telephoneY = (canvasHeight * 0.35) + 35; // Below address field
+           await document.fonts.load('47.54px Gilmer'); 
+            // console.log(document.fonts.check('bold 85.68px Gilmer'));
+            ctx.font = '47.54px Gilmer';
+            ctx.fillStyle = '#000';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             ctx.fillText(telephone, telephoneX, telephoneY);
@@ -2064,13 +2072,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const part2 = Math.floor(Math.random() * 90000) + 10000; // 5 digit number
             window.currentCardUniqueId = `${part1}${part2}`;
         }
-        const qrCodeUrl = `http://localhost/virtual_id2/final_virtual_id/New%20Cards/view_card.php?id=${window.currentCardUniqueId}`;
+        const qrCodeUrl = `test`;
         
         // Store the unique ID for later use
         window.currentQRCodeUrl = qrCodeUrl;
         
-        const qrSize = 60;
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(qrCodeUrl)}`;
+        const qrSize = 350;
+        const qrHeight = 320;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)}`;
         
         console.log('Generating QR code with unique URL:', qrUrl);
         
@@ -2153,8 +2162,8 @@ document.addEventListener('DOMContentLoaded', function() {
         canvasData.qrMargin = margin;
         
         // Position in bottom-right corner
-        const x = canvas.width - qrSize - margin;
-        let y = canvas.height - qrSize - margin;
+        const x = canvas.width - qrSize - margin-140;
+        let y = canvas.height - qrSize - margin-40;
         
         // Adjust position based on side
         if (side === 'Back') {
