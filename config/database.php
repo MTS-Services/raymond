@@ -1,5 +1,10 @@
 <?php
 // Database configuration
+// $db_host = 'db5019002075.hosting-data.io';
+// $db_name = 'dbs14962592';
+// $db_user = 'dbu4026357';
+// $db_pass = '77143Ray!@12345#123$%^7!088989';
+
 $db_host = 'db5019002075.hosting-data.io';
 $db_name = 'dbs14962592';
 $db_user = 'dbu4026357';
