@@ -5,10 +5,10 @@
 // $username = 'dbu4026357'; // Default for WAMP
 // $password = '77143Ray!@12345#123$%^7!088989'; // Default for WAMP
 
-$host = 'localhost';
+$host = '127.0.0.1:3307';
 $dbname = 'dbs14962592';
 $username = 'root';
-$password = '';
+$password = 'root';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

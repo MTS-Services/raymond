@@ -1,6 +1,12 @@
-
-
-
+/* Custom Font ArialMTBold according to PSD */
+@font-face {
+    font-family: "ArialMTBold";
+    src: url("./fonts/Arial_MT_Bold.woff") format("woff2"),
+         url("./fonts/Arial_MT_Bold.woff") format("woff"),
+         url("./fonts/Arial_MT_Bold.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
 
 * {
     margin: 0;
@@ -294,6 +300,8 @@ body {
     #comboEmotionalBackCanvas,
     #comboBlueBackCanvas) {
     margin: 0 auto;
+    border-radius: 0;
+
 }
 
 /* Mobile Responsive Styles */

@@ -639,6 +639,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Switch to combo display
         const regularDisplay = document.getElementById('regularCardDisplay');
+
         const comboDisplay = document.getElementById('comboCardDisplay');
         
         console.log('Regular display element:', regularDisplay);
@@ -1253,40 +1254,110 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Draw ID number on individual combo canvas
-    function drawIDOnComboCanvas(cardType, randomID) {
-        const canvasData = window.comboCanvases[cardType + 'Front'];
-        if (!canvasData) return;
+    // async function  drawIDOnComboCanvas(cardType, randomID) {
+    //     const canvasData = window.comboCanvases[cardType + 'Front'];
+    //     if (!canvasData) return;
         
-        const { canvas, ctx } = canvasData;
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
+    //     const { canvas, ctx } = canvasData;
+    //     const canvasWidth = canvas.width;
+    //     const canvasHeight = canvas.height;
         
-        // Use same positioning as blue_dog
-        const idBoxX = canvasWidth * 0.205; // 20.5% from left edge (shifted left)
-        const idBoxY = canvasHeight * 0.90; // 90% from top (slightly lower)
-        const boxWidth = canvasWidth * 0.28; // 28% of canvas width
+    //     // Use same positioning as blue_dog
+    //     const idBoxX = canvasWidth * 0.185; // 18.5% from left edge (shifted left)
+    //     const idBoxY = canvasHeight * 0.91; // 91% from top (slightly lower)
+    //     const boxWidth = canvasWidth * 0.28; // 28% of canvas width
         
-        // Set text style for ID number
-        ctx.font = 'bold 10px Gilmer';
-        ctx.fillStyle = '#FF0000'; // Red color
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+    //     // Forcefully wait to load font
+    //     await document.fonts.load('66.69px ArialMTBold');
+    //     console.log(document.fonts.check('66.69px ArialMTBold'));
+    //     // Set text style for ID number
+    //     ctx.font = 'normal 66.69px ArialMTBold';
+    //     ctx.fillStyle = '#FF0000'; // Red color
+    //     ctx.textAlign = 'center';
+    //     ctx.textBaseline = 'middle';
         
-        // Draw the random ID in the registry box (moved 8px to the left total, 3px higher)
-        const textX = idBoxX + (boxWidth / 2) - 8; // Center of the box, moved 8px left
-        let textY = idBoxY + 2; // Moved 2px lower to fit better in box
+    //     // Draw the random ID in the registry box (moved 8px to the left total, 3px higher)
+    //     const textX = idBoxX + (boxWidth / 2) - 8; // Center of the box, moved 8px left
+    //     let textY = idBoxY + 2; // Moved 2px lower to fit better in box
         
-        // Move ID number 2px lower for handler card
-        if (cardType === 'handler') {
-            textY += 2; // Additional 2px lower for handler card
+    //     // Move ID number 2px lower for handler card
+    //     if (cardType === 'handler') {
+    //         textY += 2; // Additional 2px lower for handler card
+    //     }
+        
+    //     ctx.fillText(randomID, textX, textY);
+        
+    //     console.log(`ID number "${randomID}" placed at (${textX}, ${textY}) for combo ${cardType} card`);
+    // }
+
+
+    // Draw Id Number and Paste into canvas and generate new then remove previous draw
+   
+    // async function drawIDOnComboCanvas(cardType, randomID) {
+    //     const canvasData = window.comboCanvases[cardType + 'Front'];
+    //     if (!canvasData) return;
+        
+    //     const { canvas, ctx } = canvasData;
+    //     const canvasWidth = canvas.width;
+    //     const canvasHeight = canvas.height;
+        
+    //     const idBoxX = canvasWidth * 0.185;
+    //     const idBoxY = canvasHeight * 0.91;
+    //     const boxWidth = canvasWidth * 0.28;
+    //     const boxHeight = 70; // approximate height of your ID text
+        
+    //     // Clear the previous ID
+    //     ctx.clearRect(idBoxX, idBoxY - boxHeight / 2, boxWidth, boxHeight);
+        
+    //     await document.fonts.load('66.69px ArialMTBold');
+    //     ctx.font = 'normal 66.69px ArialMTBold';
+    //     ctx.fillStyle = '#FF0000';
+    //     ctx.textAlign = 'center';
+    //     ctx.textBaseline = 'middle';
+        
+    //     const textX = idBoxX + (boxWidth / 2) - 8;
+    //     let textY = idBoxY + 2;
+    //     if (cardType === 'handler') textY += 2;
+        
+    //     ctx.fillText(randomID, textX, textY);
+    //     console.log(`ID number "${randomID}" placed at (${textX}, ${textY}) for combo ${cardType} card`);
+        
+    // }
+
+
+    const originalCardImages = {}; // store base images somewhere
+        async function drawIDOnComboCanvas(cardType, randomID) {
+            const canvasData = window.comboCanvases[cardType + 'Front'];
+            if (!canvasData) return;
+            
+            const { canvas, ctx } = canvasData;
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+
+            // Draw original image first
+            const baseImage = originalCardImages[cardType];
+            if (baseImage) ctx.drawImage(baseImage, 0, 0, canvasWidth, canvasHeight);
+            
+            await document.fonts.load('66.69px ArialMTBold');
+            ctx.font = 'normal 66.69px ArialMTBold';
+            ctx.fillStyle = '#FF0000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const idBoxX = canvasWidth * 0.185;
+            const idBoxY = canvasHeight * 0.91;
+            const boxWidth = canvasWidth * 0.28;
+            
+            const textX = idBoxX + (boxWidth / 2) - 8;
+            let textY = idBoxY + 2;
+            if (cardType === 'handler') textY += 2;
+            
+            ctx.fillText(randomID, textX, textY);
         }
-        
-        ctx.fillText(randomID, textX, textY);
-        
-        console.log(`ID number "${randomID}" placed at (${textX}, ${textY}) for combo ${cardType} card`);
-    }
+
 
     // Place uploaded photo on a fixed rectangle on the front canvas
+
     function placePhotoOnFront(img) {
         if (!frontCanvas || !frontCtx || !frontImage || !img) return;
         
