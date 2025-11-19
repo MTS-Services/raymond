@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setupEventListeners() {
         // Card type selection
+        // Once a card type is selected, call handleCardSelection to load the specific canvas depending on the card type
         document.getElementById('cardTypeSelect').addEventListener('change', handleCardSelection);
         
         // Control buttons
