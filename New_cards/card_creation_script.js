@@ -1194,9 +1194,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Animal's Name - use same positioning as blue_dog
             const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 95; // Moved 95px to the left
             const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
-            await document.fonts.load('bold 85.68px Gilmer'); 
+            await document.fonts.load('normal 85.68px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'bold 85.68px Gilmer';
+            ctx.font = 'normal 85.68px GilmerMedium';
             ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -1214,9 +1214,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 93; // Moved 93px to the left
             const handlerY = (canvasHeight * FRONT_LAYOUT.handler.yPct) + (FRONT_LAYOUT.handler.offsetY || 0) + 14; // Moved 15px lower
             
-            await document.fonts.load('bold 85.68px Gilmer'); 
+            await document.fonts.load('normal 85.68px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'bold 85.68px Gilmer';
+            ctx.font = 'normal 85.68px GilmerMedium';
             ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -1232,9 +1232,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (address) {
             const addressX = (canvasWidth * 0.75) + 10 +80; // Right side, moved 140px to the left
             const addressY = (canvasHeight * 0.35) + 5 - 35; // Above telephone field, moved 10px higher
-           await document.fonts.load('47.54px Gilmer'); 
+           await document.fonts.load('47.54px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'bold 47.54px Gilmer';
+            ctx.font = 'bold 47.54px GilmerMedium';
             ctx.fillStyle = '#000';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
@@ -1244,9 +1244,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (telephone) {
             const telephoneX = (canvasWidth * 0.65) -50 ; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
             const telephoneY = (canvasHeight * 0.35) + 35; // Below address field
-           await document.fonts.load('47.54px Gilmer'); 
+           await document.fonts.load('47.54px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = '47.54px Gilmer';
+            ctx.font = '47.54px GilmerMedium';
             ctx.fillStyle = '#000';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';

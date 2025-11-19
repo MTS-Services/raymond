@@ -1,9 +1,19 @@
 /* Custom Font ArialMTBold according to PSD */
 @font-face {
     font-family: "ArialMTBold";
-    src: url("./fonts/Arial_MT_Bold.woff") format("woff2"),
+    src: url("./fonts/Arial_MT_Bold.woff2") format("woff2"),
          url("./fonts/Arial_MT_Bold.woff") format("woff"),
          url("./fonts/Arial_MT_Bold.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Custom Font Gilmer Medium according to PSD */
+@font-face {
+    font-family: "GilmerMedium";
+    src: 
+         url("./fonts/gilmer_medium.woff") format("woff"),
+         url("./fonts/gilmer_medium.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
 }
