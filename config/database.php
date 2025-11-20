@@ -5,10 +5,10 @@
 // $db_user = 'dbu4026357';
 // $db_pass = '77143Ray!@12345#123$%^7!088989';
 
-$db_host = 'db5019002075.hosting-data.io';
+$db_host = '127.0.0.1:3307';
 $db_name = 'dbs14962592';
-$db_user = 'dbu4026357';
-$db_pass = '77143Ray!@12345#123$%^7!088989';
+$db_user = 'root';
+$db_pass = 'root';
 
 try {
     $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass);

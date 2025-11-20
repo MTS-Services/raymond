@@ -1,10 +1,15 @@
 <?php
 // Simple database setup script
-$db_host = 'localhost';
-$db_name = 'virtual_id_system';
-$db_user = 'root';
-$db_pass = '';
+// $db_host = 'localhost';
+// $db_name = 'virtual_id_system';
+// $db_user = 'root';
+// $db_pass = '';
 
+
+$db_host = '127.0.0.1:3307';
+$db_name = 'dbs14962592';
+$db_user = 'root';
+$db_pass = 'root';
 try {
     // Connect to MySQL server (without specifying database)
     $pdo = new PDO("mysql:host=$db_host;charset=utf8mb4", $db_user, $db_pass);
