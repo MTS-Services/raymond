@@ -1283,11 +1283,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const handlerName = handlerNameInput ? handlerNameInput.value.trim() : "";
     const address = addressInput ? addressInput.value.trim() : "";
     const telephone = telephoneInput ? telephoneInput.value.trim() : "";
-    const fillColor = whichCombo == "combo_dog" ? "#1c1b89" : "#000";
+
+    const fillColor = whichCombo == "combo_dog" || whichCombo == "combo_emotional_dog" ? "#1c1b89" : "#000";
+
+    // Here is the problem with Orginal Image that's why i have added little margin 
+    // Card type nothing special blue means top and Emotional means down one 
+   
+    const adjustAnimalAddressPostion_ = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0; 
+    const adjustTelephonePostion = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0; 
     if (animalName) {
        
       // Animal's Name - use same positioning as blue_dog
-      const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100; // Moved 95px to the left
+      const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100 - adjustAnimalAddressPostion_; // Moved 95px to the left
       const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
       await document.fonts.load("normal 90.9px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
@@ -1306,7 +1313,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (handlerName) {
       // Handler's Name - use same positioning as blue_dog
-      const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 100; // Moved 93px to the left
+      const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 100 - adjustAnimalAddressPostion_; // Moved 93px to the left
       const handlerY = (canvasHeight * FRONT_LAYOUT.handler.yPct) + (FRONT_LAYOUT.handler.offsetY || 0) + 14; // Moved 15px lower
 
       await document.fonts.load("normal 90.9px GilmerMedium");
@@ -1326,7 +1333,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Address and Telephone fields
     if (address) {
       // Canvas width already dynamic
-      const boxStartX = canvasWidth * 0.369; // starting point of the box
+      const boxStartX = (canvasWidth * 0.369 ) -adjustTelephonePostion; // starting point of the box
       const boxWidth = 1275; // your box width
       const centerX = boxStartX + (boxWidth / 2);
 
@@ -1343,8 +1350,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (telephone) {
-      const telephoneX = canvasWidth * 0.62; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
-      const telephoneY = (canvasHeight * 0.35) + 34; // Below address field
+      const telephoneX = (canvasWidth * 0.62 )- adjustTelephonePostion; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
+      const telephoneY = (canvasHeight * 0.35) + 34 ; // Below address field
       await document.fonts.load("50.2px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
       ctx.font = "50.2px GilmerMedium";
@@ -1372,8 +1379,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Draw ID number on individual combo canvas
   async function drawIDOnComboCanvas(cardType, randomID) {
+
     const canvasData = window.comboCanvases[cardType + "Front"];
 
+    const whichCombo = document.getElementById("cardTypeSelect").value.trim();
+
+    const fontSize = whichCombo == "combo_emotional_dog" ? 70 : 70;
+    const positionY = whichCombo == "combo_emotional_dog" && cardType == "blue" ? 10 : 0; // Due to Emotional Pack Image layout not wokay i have write this code adjust positoning
     if (!canvasData) return;
 
     const { canvas, ctx } = canvasData;
@@ -1387,17 +1399,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const boxWidth = canvasWidth * 0.28; // 28% of canvas width
 
     // Forcefully wait to load font
-    await document.fonts.load("70px ArialMTBold");
+    await document.fonts.load(`${fontSize}px ArialMTBold`);
 
     // Set text style for ID number
-    ctx.font = "bold 70px ArialMTBold";
+    ctx.font = `bold ${fontSize}px ArialMTBold`;
     ctx.fillStyle = "#FF0000"; // Red color
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
     // Draw the random ID in the registry box (moved 8px to the left total, 3px higher)
     const textX = idBoxX + (boxWidth / 2) - 8; // Center of the box, moved 8px left
-    let textY = idBoxY + 2; // Moved 2px lower to fit better in box
+    let textY = idBoxY + 2 + positionY; // Moved 2px lower to fit better in box
 
     // Move ID number 2px lower for handler card
     if (cardType === "handler") {
@@ -2079,9 +2091,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Store the generated ID for QR code and save functions
     window.currentCardUniqueId = randomID;
 
-    if (
-      currentCardType === "combo_emotional_dog"
-      || currentCardType === "combo_emotional_cat"
+    if (currentCardType === "combo_emotional_cat"
     ) {
       // For combo cards, draw ID on both front canvases
 
@@ -2091,7 +2101,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (
-      currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
+      currentCardType === "combo_dog" 
+      || currentCardType === "combo_red_dog"
+      || currentCardType === "combo_emotional_dog"
       && window.comboCanvases.blueFront.idNumber == null
       && window.comboCanvases.emotionalFront.idNumber == null
     ) {
@@ -2099,6 +2111,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     } else {
       alert("You already created an ID number for this card type. Please reset to create new ID.");
+      return ;
     }
 
     // Calculate position based on canvas size (responsive positioning)
