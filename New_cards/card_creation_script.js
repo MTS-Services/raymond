@@ -1260,6 +1260,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Draw names on combo canvas
   async function drawNamesOnComboCanvas(canvas, ctx, cardType) {
+
+    const whichCombo = document.getElementById("cardTypeSelect").value.trim();
+
+    if(! whichCombo){
+      alert('Please Select A Card Type');
+      return ;
+    }
     if (!canvas || !ctx) return;
 
     const canvasWidth = canvas.width;
@@ -1275,15 +1282,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const handlerName = handlerNameInput ? handlerNameInput.value.trim() : "";
     const address = addressInput ? addressInput.value.trim() : "";
     const telephone = telephoneInput ? telephoneInput.value.trim() : "";
-
+    const fillColor = whichCombo == "combo_dog" ? "#1c1b89" : "#000";
     if (animalName) {
+
+    
       // Animal's Name - use same positioning as blue_dog
       const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100; // Moved 95px to the left
       const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
       await document.fonts.load("normal 90.9px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
       ctx.font = "normal 90.9px GilmerMedium";
-      ctx.fillStyle = "#1c1b89";
+      ctx.fillStyle = fillColor;
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
 
@@ -1303,7 +1312,7 @@ document.addEventListener("DOMContentLoaded", function() {
       await document.fonts.load("normal 90.9px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
       ctx.font = "normal 90.9px GilmerMedium";
-      ctx.fillStyle = "#1c1b89";
+      ctx.fillStyle = fillColor;
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       // Auto-fit text to available width
@@ -1472,11 +1481,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Optional rounded rectangle mask (disabled for blue, red, and emotional dog cards)
-    const r =
-      (currentCardType === "blue_dog" || currentCardType === "red_dog" || currentCardType === "combo_dog"
-          || currentCardType === "emotional_dog")
-        ? 0
-        : FRONT_LAYOUT.photo.radius;
+    const r = (currentCardType === "blue_dog" || currentCardType === "red_dog" || currentCardType === "combo_dog"
+        || currentCardType === "emotional_dog")
+      ? 0
+      : FRONT_LAYOUT.photo.radius;
     if (r > 0) {
       frontCtx.save();
       frontCtx.beginPath();
@@ -2084,15 +2092,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (
-      currentCardType === "combo_dog" 
+      currentCardType === "combo_dog"
       && window.comboCanvases.blueFront.idNumber == null
       && window.comboCanvases.emotionalFront.idNumber == null
-     ) {
-
-        drawIDOnComboCanvases(randomID);
-         return;
-
-      } else {
+    ) {
+      drawIDOnComboCanvases(randomID);
+      return;
+    } else {
       alert("You already created an ID number for this card type. Please reset to create new ID.");
     }
 
