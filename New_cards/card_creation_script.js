@@ -1267,6 +1267,7 @@ document.addEventListener("DOMContentLoaded", function() {
       alert('Please Select A Card Type');
       return ;
     }
+
     if (!canvas || !ctx) return;
 
     const canvasWidth = canvas.width;
@@ -1284,8 +1285,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const telephone = telephoneInput ? telephoneInput.value.trim() : "";
     const fillColor = whichCombo == "combo_dog" ? "#1c1b89" : "#000";
     if (animalName) {
-
-    
+       
       // Animal's Name - use same positioning as blue_dog
       const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100; // Moved 95px to the left
       const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
@@ -2080,8 +2080,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.currentCardUniqueId = randomID;
 
     if (
-      currentCardType === "combo_red_dog"
-      || currentCardType === "combo_emotional_dog"
+      currentCardType === "combo_emotional_dog"
       || currentCardType === "combo_emotional_cat"
     ) {
       // For combo cards, draw ID on both front canvases
@@ -2092,7 +2091,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (
-      currentCardType === "combo_dog"
+      currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
       && window.comboCanvases.blueFront.idNumber == null
       && window.comboCanvases.emotionalFront.idNumber == null
     ) {
