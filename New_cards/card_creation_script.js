@@ -776,10 +776,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Store references for later use
         window.comboCanvases = {
-            blueFront: { canvas: comboBlueFrontCanvas, ctx: comboBlueFrontCtx, img: blueDogFrontImg, qrImg: null, qrSize: 0 },
-            blueBack: { canvas: comboBlueBackCanvas, ctx: comboBlueBackCtx, img: blueDogBackImg, qrImg: null, qrSize: 0 },
-            emotionalFront: { canvas: comboEmotionalFrontCanvas, ctx: comboEmotionalFrontCtx, img: serviceDogHandlerFrontImg, qrImg: null, qrSize: 0 },
-            emotionalBack: { canvas: comboEmotionalBackCanvas, ctx: comboEmotionalBackCtx, img: serviceDogHandlerBackImg, qrImg: null, qrSize: 0 }
+            blueFront: { canvas: comboBlueFrontCanvas, ctx: comboBlueFrontCtx, img: blueDogFrontImg, qrImg: null, qrSize: 0 , qrMargin: 0, idNumber: null},
+            blueBack: { canvas: comboBlueBackCanvas, ctx: comboBlueBackCtx, img: blueDogBackImg, qrImg: null, qrSize: 0 ,qrMargin: 0 , idNumber: null},
+            emotionalFront: { canvas: comboEmotionalFrontCanvas, ctx: comboEmotionalFrontCtx, img: serviceDogHandlerFrontImg, qrImg: null, qrSize: 0 ,qrMargin: 0 , idNumber: null },
+            emotionalBack: { canvas: comboEmotionalBackCanvas, ctx: comboEmotionalBackCtx, img: serviceDogHandlerBackImg, qrImg: null, qrSize: 0 , qrMargin: 0 , idNumber: null }
         };
         
         // Redraw combo canvases with any existing form data
@@ -1113,12 +1113,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Redraw QR code if it exists
         if (canvasData.qrImg && canvasData.qrSize > 0) {
-            const margin = canvasData.qrMargin || 10;
-            const x = canvas.width - canvasData.qrSize - margin-140;
-            let y = canvas.height - canvasData.qrSize - margin -35; // 5px lower on front side
+
+            addQRToComboCanvases(canvasData.qrImg, canvasData.qrSize);
+            // const margin = canvasData.qrMargin || 10;
+            // const x = canvas.width - canvasData.qrSize - margin-150;
+            // let y = canvas.height - canvasData.qrSize - margin -30; // 5px lower on front side
             
-            ctx.drawImage(canvasData.qrImg, x, y, canvasData.qrSize, canvasData.qrSize);
-            console.log(`QR code redrawn at (${x}, ${y}) on combo ${cardType} front side`);
+            // ctx.drawImage(canvasData.qrImg, x, y, canvasData.qrSize, canvasData.qrSize);
+            // console.log(`QR code redrawn at (${x}, ${y}) on combo ${cardType} front side`);
+        }
+
+        if(canvasData.idNumber != null){
+            drawIDOnComboCanvases(canvasData.idNumber);
         }
         
         // Place photo if uploaded
@@ -1192,11 +1198,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (animalName) {
             // Animal's Name - use same positioning as blue_dog
-            const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 95; // Moved 95px to the left
+            const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100; // Moved 95px to the left
             const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
-            await document.fonts.load('normal 85.68px GilmerMedium'); 
+            await document.fonts.load('normal 90.9px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'normal 85.68px GilmerMedium';
+            ctx.font = 'normal 90.9px GilmerMedium';
             ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -1211,12 +1217,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (handlerName) {
             // Handler's Name - use same positioning as blue_dog
-            const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 93; // Moved 93px to the left
+            const handlerX = (canvasWidth * FRONT_LAYOUT.handler.xPct) + (FRONT_LAYOUT.handler.offsetX || 0) - 100; // Moved 93px to the left
             const handlerY = (canvasHeight * FRONT_LAYOUT.handler.yPct) + (FRONT_LAYOUT.handler.offsetY || 0) + 14; // Moved 15px lower
             
-            await document.fonts.load('normal 85.68px GilmerMedium'); 
+            await document.fonts.load('normal 90.9px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'normal 85.68px GilmerMedium';
+            ctx.font = 'normal 90.9px GilmerMedium';
             ctx.fillStyle = '#1c1b89';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -1230,23 +1236,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Address and Telephone fields
         if (address) {
-            const addressX = (canvasWidth * 0.50) + 10 +80; // Right side, moved 140px to the left
-            const addressY = (canvasHeight * 0.35) + 5 - 35; // Above telephone field, moved 10px higher
-           await document.fonts.load('47.54px GilmerMedium'); 
-            // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = 'bold 47.54px GilmerMedium';
+            // Canvas width already dynamic
+            const boxStartX = canvasWidth * 0.369;   // starting point of the box
+            const boxWidth = 1275;                  // your box width
+            const centerX = boxStartX + (boxWidth / 2);
+
+            const addressY = (canvasHeight * 0.35) + 5 - 35;
+
+            await document.fonts.load('50.2px GilmerMedium');
+            ctx.font = 'normal 50.2px GilmerMedium';
             ctx.fillStyle = '#000';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(address, addressX, addressY);
+
+            ctx.textAlign = 'center';       // center horizontally
+            ctx.textBaseline = 'middle';    // center vertically
+
+            ctx.fillText(address, centerX, addressY);
         }
 
         if (telephone) {
-            const telephoneX = (canvasWidth * 0.65) -50 ; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
-            const telephoneY = (canvasHeight * 0.35) + 35; // Below address field
-           await document.fonts.load('47.54px GilmerMedium'); 
+            const telephoneX = (canvasWidth * 0.62) ; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
+            const telephoneY = (canvasHeight * 0.35) + 34; // Below address field
+           await document.fonts.load('50.2px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
-            ctx.font = '47.54px GilmerMedium';
+            ctx.font = '50.2px GilmerMedium';
             ctx.fillStyle = '#000';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -1260,9 +1272,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Draw ID on front canvases based on toggle states
         if (comboToggleStates.blueDog) {
+            window.comboCanvases.blueFront.idNumber = randomID;
             drawIDOnComboCanvas('blue', randomID);
         }
         if (comboToggleStates.handler) {
+             window.comboCanvases.emotionalFront.idNumber = randomID;
             drawIDOnComboCanvas('emotional', randomID);
         }
     }
@@ -1285,11 +1299,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const boxWidth = canvasWidth * 0.28; // 28% of canvas width
         
         // Forcefully wait to load font
-        await document.fonts.load('66.69px ArialMTBold');
+        await document.fonts.load('70px ArialMTBold');
         
        
         // Set text style for ID number
-        ctx.font = 'normal 66.69px ArialMTBold';
+        ctx.font = 'bold 70px ArialMTBold';
         ctx.fillStyle = '#FF0000'; // Red color
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -1962,8 +1976,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (currentCardType === 'combo_dog' || currentCardType === 'combo_red_dog' || currentCardType === 'combo_emotional_dog' || currentCardType === 'combo_emotional_cat') {
             // For combo cards, draw ID on both front canvases
-            drawIDOnComboCanvases(randomID);
-            showSuccessMessage(`Random ID Number Generated: ${randomID}`);
+            
+           if(currentCardType === 'combo_dog' && window.comboCanvases.blueFront.idNumber == null && window.comboCanvases.emotionalFront.idNumber == null) {
+                drawIDOnComboCanvases(randomID); 
+           }else{
+            alert("You already created an ID number for this card type. Please reset to create new ID.");
+           }
+
+            // showSuccessMessage(`Random ID Number Generated: ${randomID}`);
             return;
         }
         
@@ -2078,7 +2098,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.currentQRCodeUrl = qrCodeUrl;
         
         const qrSize = 350;
-        const qrHeight = 320;
+        const qrHeight = 350;
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)}`;
         
         console.log('Generating QR code with unique URL:', qrUrl);
@@ -2162,8 +2182,8 @@ document.addEventListener('DOMContentLoaded', function() {
         canvasData.qrMargin = margin;
         
         // Position in bottom-right corner
-        const x = canvas.width - qrSize - margin-140;
-        let y = canvas.height - qrSize - margin-40;
+        const x = canvas.width - qrSize - margin-150;
+        let y = canvas.height - qrSize - margin-30;
         
         // Adjust position based on side
         if (side === 'Back') {
