@@ -2084,11 +2084,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (
-      currentCardType === "combo_dog" && window.comboCanvases.blueFront.idNumber == null
+      currentCardType === "combo_dog" 
+      && window.comboCanvases.blueFront.idNumber == null
       && window.comboCanvases.emotionalFront.idNumber == null
-    ) {
-      return;
-    } else {
+     ) {
+
+        drawIDOnComboCanvases(randomID);
+         return;
+
+      } else {
       alert("You already created an ID number for this card type. Please reset to create new ID.");
     }
 
@@ -2171,7 +2175,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Show success message
-    showSuccessMessage(`Random ID Number Generated: ${randomID}`);
+    // showSuccessMessage(`Random ID Number Generated: ${randomID}`);
   }
 
   function addQRCode() {
