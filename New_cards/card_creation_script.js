@@ -1230,13 +1230,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Address and Telephone fields
         if (address) {
-            const addressX = (canvasWidth * 0.75) + 10 +80; // Right side, moved 140px to the left
+            const addressX = (canvasWidth * 0.50) + 10 +80; // Right side, moved 140px to the left
             const addressY = (canvasHeight * 0.35) + 5 - 35; // Above telephone field, moved 10px higher
            await document.fonts.load('47.54px GilmerMedium'); 
             // console.log(document.fonts.check('bold 85.68px Gilmer'));
             ctx.font = 'bold 47.54px GilmerMedium';
             ctx.fillStyle = '#000';
-            ctx.textAlign = 'right';
+            ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             ctx.fillText(address, addressX, addressY);
         }
