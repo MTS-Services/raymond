@@ -1,5 +1,5 @@
 // Clean Card Creation Script
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Canvas elements
   const frontCanvas = document.getElementById("frontCanvas");
   const backCanvas = document.getElementById("backCanvas");
@@ -53,13 +53,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const toggleHandlerBtn = document.getElementById("toggleHandler");
 
     if (toggleBlueDogBtn) {
-      toggleBlueDogBtn.addEventListener("click", function() {
+      toggleBlueDogBtn.addEventListener("click", function () {
         toggleComboCard("blueDog", toggleBlueDogBtn);
       });
     }
 
     if (toggleHandlerBtn) {
-      toggleHandlerBtn.addEventListener("click", function() {
+      toggleHandlerBtn.addEventListener("click", function () {
         toggleComboCard("handler", toggleHandlerBtn);
       });
     }
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
       photoInput.addEventListener("change", handlePhotoUpload);
     }
     if (animalNameInput) {
-      animalNameInput.addEventListener("input", function() {
+      animalNameInput.addEventListener("input", function () {
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
           || currentCardType === "combo_emotional_dog" || currentCardType === "combo_emotional_cat"
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
     if (handlerNameInput) {
-      handlerNameInput.addEventListener("input", function() {
+      handlerNameInput.addEventListener("input", function () {
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
           || currentCardType === "combo_emotional_dog" || currentCardType === "combo_emotional_cat"
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
     if (addressInput) {
-      addressInput.addEventListener("input", function() {
+      addressInput.addEventListener("input", function () {
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
           || currentCardType === "combo_emotional_dog" || currentCardType === "combo_emotional_cat"
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
     if (telephoneInput) {
-      telephoneInput.addEventListener("input", function() {
+      telephoneInput.addEventListener("input", function () {
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
           || currentCardType === "combo_emotional_dog" || currentCardType === "combo_emotional_cat"
@@ -229,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
       console.log("Loading regular card pair for:", selectedType);
       console.log("About to call loadCardPair with:", selectedType);
+
+     
       loadCardPair(selectedType);
     }
   }
@@ -748,13 +750,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load Service Dog front
     const blueDogFrontImg = new Image();
-    blueDogFrontImg.onload = function() {
+    blueDogFrontImg.onload = function () {
       console.log("Dog front image loaded successfully");
       comboBlueFrontCtx.drawImage(blueDogFrontImg, 0, 0, comboBlueFrontCanvas.width, comboBlueFrontCanvas.height);
       comboBlueFrontCanvas.style.display = "block";
       comboBlueFrontCanvas.nextElementSibling.style.display = "none";
     };
-    blueDogFrontImg.onerror = function() {
+    blueDogFrontImg.onerror = function () {
       console.error("Failed to load Dog front image:", dogFrontSrc);
       alert("Failed to load Dog front image. Please check if the file exists.");
     };
@@ -763,13 +765,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load Service Dog back
     const blueDogBackImg = new Image();
-    blueDogBackImg.onload = function() {
+    blueDogBackImg.onload = function () {
       console.log("Dog back image loaded successfully");
       comboBlueBackCtx.drawImage(blueDogBackImg, 0, 0, comboBlueBackCanvas.width, comboBlueBackCanvas.height);
       comboBlueBackCanvas.style.display = "block";
       comboBlueBackCanvas.nextElementSibling.style.display = "none";
     };
-    blueDogBackImg.onerror = function() {
+    blueDogBackImg.onerror = function () {
       console.error("Failed to load Dog back image:", dogBackSrc);
       alert("Failed to load Dog back image. Please check if the file exists.");
     };
@@ -778,7 +780,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load Service Dog Handler front
     const serviceDogHandlerFrontImg = new Image();
-    serviceDogHandlerFrontImg.onload = function() {
+    serviceDogHandlerFrontImg.onload = function () {
       console.log("Service Dog Handler front image loaded successfully");
       comboEmotionalFrontCtx.drawImage(
         serviceDogHandlerFrontImg,
@@ -790,7 +792,7 @@ document.addEventListener("DOMContentLoaded", function() {
       comboEmotionalFrontCanvas.style.display = "block";
       comboEmotionalFrontCanvas.nextElementSibling.style.display = "none";
     };
-    serviceDogHandlerFrontImg.onerror = function() {
+    serviceDogHandlerFrontImg.onerror = function () {
       console.error("Failed to load Service Dog Handler front image:", handlerFrontSrc);
       alert("Failed to load Service Dog Handler front image. Please check if the file exists.");
     };
@@ -799,7 +801,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Load Service Dog Handler back
     const serviceDogHandlerBackImg = new Image();
-    serviceDogHandlerBackImg.onload = function() {
+    serviceDogHandlerBackImg.onload = function () {
       console.log("Service Dog Handler back image loaded successfully");
       comboEmotionalBackCtx.drawImage(
         serviceDogHandlerBackImg,
@@ -811,7 +813,7 @@ document.addEventListener("DOMContentLoaded", function() {
       comboEmotionalBackCanvas.style.display = "block";
       comboEmotionalBackCanvas.nextElementSibling.style.display = "none";
     };
-    serviceDogHandlerBackImg.onerror = function() {
+    serviceDogHandlerBackImg.onerror = function () {
       console.error("Failed to load Service Dog Handler back image:", handlerBackSrc);
       alert("Failed to load Service Dog Handler back image. Please check if the file exists.");
     };
@@ -943,7 +945,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const img = new Image();
 
-    img.onload = function() {
+    img.onload = function () {
       console.log(`SUCCESS: ${side} image loaded:`, filename);
       console.log(`Image dimensions: ${img.width}x${img.height}`);
       console.log(`Canvas elements - frontCanvas:`, frontCanvas, "backCanvas:", backCanvas);
@@ -966,13 +968,13 @@ document.addEventListener("DOMContentLoaded", function() {
       updateStatus();
     };
 
-    img.onerror = function() {
+    img.onerror = function () {
       console.error(`ERROR: Failed to load ${side} image:`, filename);
       console.error("Trying direct path...");
 
       // Try without any path modifications
       const directImg = new Image();
-      directImg.onload = function() {
+      directImg.onload = function () {
         console.log(`SUCCESS with direct path: ${side} image loaded:`, filename);
 
         if (side === "front") {
@@ -987,7 +989,7 @@ document.addEventListener("DOMContentLoaded", function() {
         updateStatus();
       };
 
-      directImg.onerror = function() {
+      directImg.onerror = function () {
         console.error(`Direct path also failed for ${side}:`, filename);
 
         // For back side, try alternatives
@@ -1018,7 +1020,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const img = new Image();
     img.crossOrigin = "anonymous";
 
-    img.onload = function() {
+    img.onload = function () {
       console.log(`SUCCESS: Alternative ${side} file loaded:`, filename);
 
       if (side === "back") {
@@ -1031,7 +1033,7 @@ document.addEventListener("DOMContentLoaded", function() {
       updateStatus();
     };
 
-    img.onerror = function() {
+    img.onerror = function () {
       console.log(`Failed alternative file:`, filename);
       tryAlternativeFile(alternatives, index + 1, side);
     };
@@ -1148,9 +1150,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       const img = new Image();
-      img.onload = function() {
+      img.onload = function () {
         frontPhotoImage = img;
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
@@ -1263,9 +1265,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const whichCombo = document.getElementById("cardTypeSelect").value.trim();
 
-    if(! whichCombo){
+    if (!whichCombo) {
       alert('Please Select A Card Type');
-      return ;
+      return;
     }
 
     if (!canvas || !ctx) return;
@@ -1288,11 +1290,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Here is the problem with Orginal Image that's why i have added little margin 
     // Card type nothing special blue means top and Emotional means down one 
-   
-    const adjustAnimalAddressPostion_ = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0; 
-    const adjustTelephonePostion = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0; 
+
+    const adjustAnimalAddressPostion_ = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0;
+    const adjustTelephonePostion = whichCombo == "combo_emotional_dog" && cardType == 'blue' ? 30 : 0;
     if (animalName) {
-       
+
       // Animal's Name - use same positioning as blue_dog
       const animalX = (canvasWidth * FRONT_LAYOUT.animal.xPct) + (FRONT_LAYOUT.animal.offsetX || 0) - 100 - adjustAnimalAddressPostion_; // Moved 95px to the left
       const animalY = (canvasHeight * FRONT_LAYOUT.animal.yPct) + (FRONT_LAYOUT.animal.offsetY || 0) + 15; // Moved 15px lower
@@ -1333,7 +1335,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Address and Telephone fields
     if (address) {
       // Canvas width already dynamic
-      const boxStartX = (canvasWidth * 0.369 ) -adjustTelephonePostion; // starting point of the box
+      const boxStartX = (canvasWidth * 0.369) - adjustTelephonePostion; // starting point of the box
       const boxWidth = 1275; // your box width
       const centerX = boxStartX + (boxWidth / 2);
 
@@ -1350,8 +1352,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (telephone) {
-      const telephoneX = (canvasWidth * 0.62 )- adjustTelephonePostion; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
-      const telephoneY = (canvasHeight * 0.35) + 34 ; // Below address field
+      const telephoneX = (canvasWidth * 0.62) - adjustTelephonePostion; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
+      const telephoneY = (canvasHeight * 0.35) + 34; // Below address field
       await document.fonts.load("50.2px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
       ctx.font = "50.2px GilmerMedium";
@@ -1494,7 +1496,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Optional rounded rectangle mask (disabled for blue, red, and emotional dog cards)
     const r = (currentCardType === "blue_dog" || currentCardType === "red_dog" || currentCardType === "combo_dog"
-        || currentCardType === "emotional_dog")
+      || currentCardType === "emotional_dog")
       ? 0
       : FRONT_LAYOUT.photo.radius;
     if (r > 0) {
@@ -2101,7 +2103,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (
-      currentCardType === "combo_dog" 
+      currentCardType === "combo_dog"
       || currentCardType === "combo_red_dog"
       || currentCardType === "combo_emotional_dog"
       && window.comboCanvases.blueFront.idNumber == null
@@ -2111,7 +2113,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     } else {
       alert("You already created an ID number for this card type. Please reset to create new ID.");
-      return ;
+      return;
     }
 
     // Calculate position based on canvas size (responsive positioning)
@@ -2229,16 +2231,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const qrSize = 350;
     const qrHeight = 350;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${
-      encodeURIComponent(qrCodeUrl)
-    }`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)
+      }`;
 
     console.log("Generating QR code with unique URL:", qrUrl);
 
     const qrImg = new Image();
     qrImg.crossOrigin = "anonymous";
 
-    qrImg.onload = function() {
+    qrImg.onload = function () {
       console.log("QR code image loaded, placing on both sides, currentCardType:", currentCardType);
 
       if (
@@ -2269,7 +2270,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showSuccessMessage("QR Code added to all card sides with unique URL!");
     };
 
-    qrImg.onerror = function() {
+    qrImg.onerror = function () {
       console.error("Failed to generate QR code");
       alert("Failed to generate QR code. Please try again.");
     };
@@ -2581,7 +2582,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function downloadComboCardsLocally() {
     // Download blue dog card
     if (frontImage) {
-      frontCanvas.toBlob(function(blob) {
+      frontCanvas.toBlob(function (blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -2593,7 +2594,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Download emotional dog card (same front, different back)
     if (backImage) {
-      backCanvas.toBlob(function(blob) {
+      backCanvas.toBlob(function (blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -2666,7 +2667,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const filename = `${card.name}_${side}_${timestamp}.png`;
 
       if (canvas) {
-        canvas.toBlob(function(blob) {
+        canvas.toBlob(function (blob) {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
@@ -2694,7 +2695,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function downloadSingleComboCard(card, timestamp) {
     // Download front side
     if (card.frontCanvas) {
-      card.frontCanvas.toBlob(function(blob) {
+      card.frontCanvas.toBlob(function (blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -2707,7 +2708,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Download back side with delay
     if (card.backCanvas) {
       setTimeout(() => {
-        card.backCanvas.toBlob(function(blob) {
+        card.backCanvas.toBlob(function (blob) {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
@@ -2783,7 +2784,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Download the combined image
-    combinedCanvas.toBlob(function(blob) {
+    combinedCanvas.toBlob(function (blob) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -2796,7 +2797,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function downloadCardLocally() {
     // Download front side
     if (frontImage) {
-      frontCanvas.toBlob(function(blob) {
+      frontCanvas.toBlob(function (blob) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -2809,7 +2810,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Download back side if available
     if (backImage) {
       setTimeout(() => {
-        backCanvas.toBlob(function(blob) {
+        backCanvas.toBlob(function (blob) {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
