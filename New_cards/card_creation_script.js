@@ -1,4 +1,5 @@
 // Clean Card Creation Script
+
 document.addEventListener("DOMContentLoaded", function () {
   // Canvas elements
   const frontCanvas = document.getElementById("frontCanvas");
@@ -2224,15 +2225,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const part2 = Math.floor(Math.random() * 90000) + 10000; // 5 digit number
       window.currentCardUniqueId = `${part1}${part2}`;
     }
-    const qrCodeUrl = `test`;
+    const qrCodeUrl = `1`;
 
     // Store the unique ID for later use
     window.currentQRCodeUrl = qrCodeUrl;
 
     const qrSize = 350;
     const qrHeight = 350;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)
-      }`;
+    // const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)}`;
+
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeUrl)}&size=${qrSize}x${qrHeight}&margin=0`;
 
     console.log("Generating QR code with unique URL:", qrUrl);
 
