@@ -18,6 +18,16 @@
     font-style: normal;
 }
 
+/* Custom Font Gilmer REgular according to PSD */
+@font-face {
+    font-family: "GilmerRegular";
+    src: url("./fonts/gilmer_regular.woff2") format("woff2"),
+         url("./fonts/gilmer_regular.woff") format("woff"),
+         url("./fonts/gilmer_regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
