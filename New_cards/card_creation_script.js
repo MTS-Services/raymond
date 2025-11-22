@@ -1386,7 +1386,7 @@ function removeOneMoreInput(event){
     // Address and Telephone fields
     if (address) {
       // Canvas width already dynamic
-      const boxStartX = (canvasWidth * 0.369) - adjustTelephonePostion; // starting point of the box
+      const boxStartX = (canvasWidth * 0.369) - adjustAnimalAddressPostion_; // starting point of the box
       const boxWidth = 1275; // your box width
       const centerX = boxStartX + (boxWidth / 2);
 
@@ -1404,7 +1404,7 @@ function removeOneMoreInput(event){
 
     if (telephone) {
       const telephoneX = (canvasWidth * 0.62) - adjustTelephonePostion; // Right side, moved 60px to the left (70px - 10px = 10px more to the right)
-      const telephoneY = (canvasHeight * 0.35) + 34; // Below address field
+      const telephoneY = (canvasHeight * 0.35) + (currentCardType == 'combo_emotional_cat' || currentCardType == 'combo_emotional_dog' ? 30 : 34); // Below address field
       await document.fonts.load("50.2px GilmerMedium");
       // console.log(document.fonts.check('bold 85.68px Gilmer'));
       ctx.font = "50.2px GilmerMedium";
