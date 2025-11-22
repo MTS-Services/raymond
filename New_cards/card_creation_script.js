@@ -1,4 +1,5 @@
 // Clean Card Creation Script
+
 document.addEventListener("DOMContentLoaded", function () {
   // Canvas elements
   const frontCanvas = document.getElementById("frontCanvas");
@@ -10,7 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let frontImage = null;
   let backImage = null;
   let currentCardType = "";
-  let frontPhotoImage = null; // user uploaded photo to draw on front
+  let frontPhotoImage = null;
+  let frontPhotoImage2 = null;
+  let isFrontPhotoImage2 = false;
+  // user uploaded photo to draw on front
   // Combo card toggle states (both cards are enabled by default)
   let comboToggleStates = {
     blueDog: true,
@@ -41,6 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Once a card type is selected, call handleCardSelection to load the specific canvas depending on the card type
     document.getElementById("cardTypeSelect").addEventListener("change", handleCardSelection);
 
+    // this for combo aditional input 
+
+    // Once a card type is selected, call handleCardSelection to load the specific canvas depending on the card type
+    document.getElementById("addExtraInput").addEventListener("click", addOneMoreInput);
+    document.getElementById("removeExtraInput").addEventListener("click", removeOneMoreInput);
     // Control buttons
     document.getElementById("generateIDBtn").addEventListener("click", generateRandomID);
     document.getElementById("addQRBtn").addEventListener("click", addQRCode);
@@ -66,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Photo upload & names inputs
     const photoInput = document.getElementById("photoInput");
+    const photoInput2 = document.getElementById("photoInput2");
     const animalNameInput = document.getElementById("animalNameInput");
     const handlerNameInput = document.getElementById("handlerNameInput");
     const addressInput = document.getElementById("addressInput");
@@ -95,6 +105,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (photoInput) {
       photoInput.addEventListener("change", handlePhotoUpload);
+    }
+
+    if (photoInput2) {
+      photoInput2.addEventListener("change", handlePhotoUpload);
     }
     if (animalNameInput) {
       animalNameInput.addEventListener("input", function () {
@@ -195,6 +209,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Event listeners setup complete");
   }
+// Extra Field
+
+function addOneMoreInput(event){
+  document.getElementById('photoInput2').style.display = 'block';
+  event.target.style.display = 'none';
+  document.getElementById('removeExtraInput').style.display = 'block';
+  isFrontPhotoImage2 = true;
+}
+function removeOneMoreInput(event){
+  document.getElementById('photoInput2').style.display = 'none';
+  event.target.style.display = 'none';
+   document.getElementById('addExtraInput').style.display = 'block';
+   isFrontPhotoImage2 = false;
+   frontPhotoImage2 = null;
+
+   redrawComboCanvases()
+}
+
 
   function handleCardSelection() {
     const selectElement = document.getElementById("cardTypeSelect");
@@ -273,13 +305,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function loadCardPair(cardType) {
+  async function loadCardPair(cardType) {
     console.log("Loading card pair for:", cardType);
     console.log("Card type being processed:", cardType);
 
     // First, get all available cards from the server
     console.log("Fetching cards from server for card type:", cardType);
-    fetch("get_cards.php")
+   await fetch("get_cards.php")
       .then(response => {
         console.log("Server response status:", response.status);
         return response.json();
@@ -291,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
           findAndLoadMatchingCards(cardType, data.cards);
         } else {
           console.error("Failed to load cards from server");
+         
           // Fallback to hardcoded paths
           loadWithHardcodedPaths(cardType);
         }
@@ -1049,13 +1082,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Set canvas size to maintain aspect ratio
-    const maxWidth = 400;
-    const maxHeight = 300;
+    // No developer what ever you have aspect ratio don't change the canvas size please
+    const maxWidth = 2373;
+    const maxHeight = 1491;
     const ratio = Math.min(maxWidth / image.width, maxHeight / image.height);
 
     console.log(`Setting canvas size: ${image.width * ratio}x${image.height * ratio} (ratio: ${ratio})`);
     canvas.width = image.width * ratio;
     canvas.height = image.height * ratio;
+    canvas.style.borderRadius  = "0px";
 
     // Draw image
     console.log("Clearing canvas and drawing image...");
@@ -1153,7 +1188,12 @@ document.addEventListener("DOMContentLoaded", function () {
     reader.onload = function (e) {
       const img = new Image();
       img.onload = function () {
-        frontPhotoImage = img;
+        if(isFrontPhotoImage2 && event.target.id === 'photoInput2'){ 
+          frontPhotoImage2 = img;
+        }else{
+           frontPhotoImage = img;
+        }
+       
         if (
           currentCardType === "combo_dog" || currentCardType === "combo_red_dog"
           || currentCardType === "combo_emotional_dog" || currentCardType === "combo_emotional_cat"
@@ -1210,8 +1250,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Place photo if uploaded
-    if (frontPhotoImage) {
-      placePhotoOnComboCanvas(canvas, ctx, frontPhotoImage, cardType);
+    if (frontPhotoImage || frontPhotoImage2) {
+      if(isFrontPhotoImage2 && frontPhotoImage2 && cardType == "emotional") {
+
+        // To draw combo second  image check frontPhotoImage2 is true if true and card type emotional means bottom one then draw extra image else do as default
+        // If you are developer please carfull because project is not organized
+       
+          placePhotoOnComboCanvas(canvas, ctx, frontPhotoImage2, cardType);
+      }else{
+      
+          placePhotoOnComboCanvas(canvas, ctx, frontPhotoImage, cardType);
+      }
+      
     }
 
     // Draw text fields
@@ -1258,6 +1308,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // No rounded rectangle mask for combo cards (same as blue_dog)
     ctx.drawImage(img, sx, sy, sWidth, sHeight, photoX, photoY, photoW, photoH);
+   
   }
 
   // Draw names on combo canvas
@@ -1286,7 +1337,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const address = addressInput ? addressInput.value.trim() : "";
     const telephone = telephoneInput ? telephoneInput.value.trim() : "";
 
-    const fillColor = whichCombo == "combo_dog" || whichCombo == "combo_emotional_dog" ? "#1c1b89" : "#000";
+    const fillColor = whichCombo == "combo_dog" || whichCombo == "combo_emotional_dog" || whichCombo == "combo_emotional_cat" ? "#1c1b89" : "#000";
 
     // Here is the problem with Orginal Image that's why i have added little margin 
     // Card type nothing special blue means top and Emotional means down one 
@@ -1387,7 +1438,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const whichCombo = document.getElementById("cardTypeSelect").value.trim();
 
     const fontSize = whichCombo == "combo_emotional_dog" ? 70 : 70;
-    const positionY = whichCombo == "combo_emotional_dog" && cardType == "blue" ? 10 : 0; // Due to Emotional Pack Image layout not wokay i have write this code adjust positoning
+    const positionY = whichCombo == "combo_emotional_dog" && cardType == "blue" ? 10 : -5; // Due to Emotional Pack Image layout not wokay i have write this code adjust positoning
     if (!canvasData) return;
 
     const { canvas, ctx } = canvasData;
@@ -1437,10 +1488,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (currentCardType === "child_identification") {
       // Blue child identification card photo positioning - moved 50px lower, width increased by 10px, height increased by 10px
-      photoX = (canvasWidth * FRONT_LAYOUT.photo.xPct) + (FRONT_LAYOUT.photo.offsetX || 0);
-      photoY = (canvasHeight * FRONT_LAYOUT.photo.yPct) + (FRONT_LAYOUT.photo.offsetY || 0) + 50; // 50px lower (40px + 10px)
-      photoW = (FRONT_LAYOUT.photo.wPx || (canvasWidth * (FRONT_LAYOUT.photo.wPct || 0))) + 10; // Width increased by 10px
-      photoH = (FRONT_LAYOUT.photo.hPx || (canvasHeight * (FRONT_LAYOUT.photo.hPct || 0))) + 10; // Height increased by 10px (was -5px, now +10px = +15px total increase)
+    
+      photoX = (canvasWidth * FRONT_LAYOUT.photo.xPct) + (FRONT_LAYOUT.photo.offsetX || 0)+30;
+      photoY = (canvasHeight * FRONT_LAYOUT.photo.yPct) + (FRONT_LAYOUT.photo.offsetY || 0)+311; // 50px lower (40px + 10px)
+      // photoW = (FRONT_LAYOUT.photo.wPx || (canvasWidth * (FRONT_LAYOUT.photo.wPct || 0))) + 10; // Width increased by 10px
+      // photoH = (FRONT_LAYOUT.photo.hPx || (canvasHeight * (FRONT_LAYOUT.photo.hPct || 0))) + 10; // Height increased by 10px (was -5px, now +10px = +15px total increase)
+
+      photoH = 760;
+      photoW = 640;
+
     } else if (currentCardType === "child_identification_red") {
       // Red child identification card photo positioning - moved 31px lower (50px - 15px - 4px), width decreased by 5px, height increased by 25%
       const basePhotoW = FRONT_LAYOUT.photo.wPx || (canvasWidth * (FRONT_LAYOUT.photo.wPct || 0));
@@ -1525,7 +1581,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Draw names based on card type (Animal or Child)
-  function drawNamesOnFront() {
+  async function drawNamesOnFront() {
     if (!frontCanvas || !frontCtx || !frontImage) return;
 
     const canvasWidth = frontCanvas.width;
@@ -1574,82 +1630,89 @@ document.addEventListener("DOMContentLoaded", function () {
       const parents = childParentsInput ? childParentsInput.value.trim() : "";
 
       // Set smaller font for child ID card fields
-      frontCtx.font = "bold 10px Gilmer";
+      await document.fonts.load("78px GilmerRegular");
+      frontCtx.font = "normal 78px GilmerRegular"; // Bigger font for name
       frontCtx.fillStyle = "#000000";
-
+      const fillColor = currentCardType === "child_identification" ? "#1c1b89" : "#FF0000";
+      const ChildNameAdjsutPostionX = currentCardType === "child_identification_red" ? 45 : 0
+      const ChildNameAdjsutPostionY = currentCardType === "child_identification_red" ? 20 : 0
       // Child Name - positioned at the top of the card (bigger, red, 10px lower, 30px left)
       if (childName) {
-        frontCtx.font = "bold 18px Gilmer"; // Bigger font for name
-        frontCtx.fillStyle = "#FF0000"; // Red color
-        const nameX = (canvasWidth * 0.52) - 30; // 30px to the left (20px + 10px)
-        const nameY = (canvasHeight * 0.25) + 30; // Top area + 10px lower
+       
+        await document.fonts.load("136px GilmerRegular");
+        frontCtx.font = "bold 136px GilmerRegular"; // Bigger font for name
+        frontCtx.fillStyle = fillColor; // Red color
+        const nameX = (canvasWidth * 0.35) - 30 + ChildNameAdjsutPostionX; // 30px to the left (20px + 10px)
+        const nameY = (canvasHeight * 0.25) + 155 + ChildNameAdjsutPostionY; // Top area + 10px lower
+       
         frontCtx.fillText(childName, nameX, nameY);
-        frontCtx.font = "bold 10px Gilmer"; // Reset to smaller font
+        frontCtx.font = "normal 78px GilmerRegular"; // Reset to smaller font
         frontCtx.fillStyle = "#000000"; // Reset to black color
       }
 
       // Left column fields - moved 30px to the left (20px + 10px)
       // DOB - positioned to match template
       if (dob) {
-        const dobX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const dobY = (canvasHeight * 0.38) + 15; // Adjusted vertical position
+       
+        const dobX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const dobY = (canvasHeight * 0.38) + 100; // Adjusted vertical position
         frontCtx.fillText(dob, dobX, dobY);
       }
 
       // Hair - below DOB
       if (hair) {
-        const hairX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const hairY = (canvasHeight * 0.44) + 15;
+        const hairX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const hairY = (canvasHeight * 0.44) + 100; // Adjusted vertical position
         frontCtx.fillText(hair, hairX, hairY);
       }
 
       // Height - below hair
       if (height) {
-        const heightX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const heightY = (canvasHeight * 0.50) + 15;
+        const heightX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const heightY = (canvasHeight * 0.5) + 100;
         frontCtx.fillText(height, heightX, heightY);
       }
 
       // Weight - below height
       if (weight) {
-        const weightX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const weightY = (canvasHeight * 0.56) + 15;
+        const weightX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const weightY = (canvasHeight * 0.56) + 100;
         frontCtx.fillText(weight, weightX, weightY);
       }
 
       // Mom - below weight (moved 7px lower, was 10px lower, now 3px higher)
       if (mom) {
-        const momX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const momY = (canvasHeight * 0.62) + 22; // 7px lower (15 + 7, was 25)
+        const momX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const momY = (canvasHeight * 0.64) + 105; // 7px lower (15 + 7, was 25)
         frontCtx.fillText(mom, momX, momY);
       }
 
       // Dad - below mom (moved 7px lower, was 10px lower, now 3px higher)
       if (dad) {
-        const dadX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const dadY = (canvasHeight * 0.68) + 22; // 7px lower (15 + 7, was 25)
+        const dadX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const dadY = (canvasHeight * 0.70) + 102; // 7px lower (15 + 7, was 25)
         frontCtx.fillText(dad, dadX, dadY);
       }
 
       // Parents - below dad (moved 7px lower, was 10px lower, now 3px higher)
       if (parents) {
-        const parentsX = (canvasWidth * 0.58) - 30; // 30px to the left
-        const parentsY = (canvasHeight * 0.74) + 22; // 7px lower (15 + 7, was 25)
+        const parentsX = (canvasWidth * 0.48) - 0; // 30px to the left
+        const parentsY = (canvasHeight * 0.76) + 105; // 7px lower (15 + 7, was 25)
         frontCtx.fillText(parents, parentsX, parentsY);
       }
 
       // Right column fields - Sex and Eyes moved 10px to the left (was +20, now +10)
       // Sex - top right, same level as DOB
       if (sex) {
-        const sexX = (canvasWidth * 0.78) + 10; // 10px to the right (was 20px)
-        const sexY = (canvasHeight * 0.38) + 15;
+        const sexX = (canvasWidth * 0.78) + 30; // 10px to the right (was 20px)
+        const sexY = (canvasHeight * 0.38) + 100;
         frontCtx.fillText(sex, sexX, sexY);
       }
 
       // Eyes - below sex, same level as hair
       if (eyes) {
-        const eyesX = (canvasWidth * 0.78) + 10; // 10px to the right (was 20px)
-        const eyesY = (canvasHeight * 0.44) + 15;
+        const eyesX = (canvasWidth * 0.78) + 30; // 10px to the right (was 20px)
+        const eyesY = (canvasHeight * 0.44) + 100;
         frontCtx.fillText(eyes, eyesX, eyesY);
       }
     } else if (currentCardType === "autism_card_infinity" || currentCardType === "autism_card_puzzle") {
@@ -1945,7 +2008,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Draw text on back side (expiry date)
-  function drawBackSideText() {
+ async function drawBackSideText() {
     if (!backCanvas || !backCtx || !backImage) return;
 
     if (currentCardType === "emergency_id_card") {
@@ -2023,15 +2086,15 @@ document.addEventListener("DOMContentLoaded", function () {
       if (expiryDate) {
         const canvasWidth = backCanvas.width;
         const canvasHeight = backCanvas.height;
-
+await document.fonts.load("normal 78px GilmerRegular");
         // Position expiry date in left bottom corner
-        backCtx.font = "bold 12px Gilmer";
-        backCtx.fillStyle = "#000000";
+        backCtx.font = "normal 78px GilmerRegular";
+        backCtx.fillStyle = currentCardType === "child_identification" ?"#FF0000" : "#FF0000";
         backCtx.textAlign = "left";
         backCtx.textBaseline = "bottom";
 
-        const expiryX = (canvasWidth * 0.1) + 25; // 25px to the right (20px + 5px)
-        const expiryY = (canvasHeight * 0.95) - 20; // 20px higher
+        const expiryX = (canvasWidth * 0.15) + 35; // 25px to the right (20px + 5px)
+        const expiryY = (canvasHeight * 0.88) - 20; // 20px higher
 
         backCtx.fillStyle = "#FF0000"; // Red color
         backCtx.fillText(expiryDate, expiryX, expiryY); // Just the date, no "Expires:" label
@@ -2041,15 +2104,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (additionalInfo) {
         const canvasWidth = backCanvas.width;
         const canvasHeight = backCanvas.height;
-
+       
         // Position additional info at bottom of back side
-        backCtx.font = "bold 11px Gilmer";
-        backCtx.fillStyle = "#000000";
+        await document.fonts.load("normal 90px GilmerMedium");
+        backCtx.font = "normal 90px GilmerMedium";
+        backCtx.fillStyle = "#fff";
         backCtx.textAlign = "center";
         backCtx.textBaseline = "bottom";
 
         const additionalX = canvasWidth * 0.5; // Center horizontally
-        const additionalY = canvasHeight * 0.95; // Bottom of card
+        const additionalY = canvasHeight * 0.97; // Bottom of card
 
         backCtx.fillText(additionalInfo, additionalX, additionalY);
         console.log(`Additional info "${additionalInfo}" placed at (${additionalX}, ${additionalY}) on back side`);
@@ -2057,7 +2121,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function generateRandomID() {
+
+ async function generateRandomID() {
     console.log("Generating random ID number...");
 
     if (
@@ -2108,27 +2173,27 @@ document.addEventListener("DOMContentLoaded", function () {
       || currentCardType === "combo_emotional_dog"
       && window.comboCanvases.blueFront.idNumber == null
       && window.comboCanvases.emotionalFront.idNumber == null
-    ) {
+    ){
       drawIDOnComboCanvases(randomID);
       return;
     } else {
       alert("You already created an ID number for this card type. Please reset to create new ID.");
-      return;
     }
-
+alert("You already created an ID number for this card type. Please reset to create new ID.");
     // Calculate position based on canvas size (responsive positioning)
     const canvasWidth = frontCanvas.width;
     const canvasHeight = frontCanvas.height;
 
     if (currentCardType === "child_identification" || currentCardType === "child_identification_red") {
       // Child identification card: ID number at bottom right with red color and "Card No:" label
-      frontCtx.font = "bold 10px Gilmer";
-      frontCtx.fillStyle = "#FF0000"; // Changed to red color
+      await document.fonts.load("bold 90px GilmerMedium");
+      frontCtx.font = "bold 90px Gilmer";
+      frontCtx.fillStyle = currentCardType === "child_identification" ?"#fff" : "#FF0000"; // Changed to red color
       frontCtx.textAlign = "right";
       frontCtx.textBaseline = "bottom";
 
-      const cardNoX = canvasWidth * 0.95; // 95% from left (right side)
-      const cardNoY = canvasHeight * 0.95; // 95% from top (bottom)
+      const cardNoX = canvasWidth * 0.94; // 95% from left (right side)
+      const cardNoY = canvasHeight * 0.975; // 95% from top (bottom)
 
       frontCtx.fillText(`Card No: ${randomID}`, cardNoX, cardNoY);
       console.log(`ID number "Card No: ${randomID}" placed at (${cardNoX}, ${cardNoY}) on child identification card`);
@@ -2224,15 +2289,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const part2 = Math.floor(Math.random() * 90000) + 10000; // 5 digit number
       window.currentCardUniqueId = `${part1}${part2}`;
     }
-    const qrCodeUrl = `test`;
+    const qrCodeUrl = `1`;
 
     // Store the unique ID for later use
     window.currentQRCodeUrl = qrCodeUrl;
 
     const qrSize = 350;
     const qrHeight = 350;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrHeight}&data=${encodeURIComponent(qrCodeUrl)
-      }`;
+
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeUrl)}&size=${qrSize}x${qrHeight}&margin=0`;
 
     console.log("Generating QR code with unique URL:", qrUrl);
 
@@ -2253,18 +2318,20 @@ document.addEventListener("DOMContentLoaded", function () {
         // Regular cards
         // Position in bottom-right corner of back side (moved 15px higher)
         const margin = 10;
-        const backX = backCanvas.width - qrSize - margin;
-        const backY = backCanvas.height - qrSize - margin - 15; // 15px higher
+        const backX = backCanvas.width - qrSize - margin -110;
+        const backY = backCanvas.height - qrSize - margin - 260; // 15px higher
 
         backCtx.drawImage(qrImg, backX, backY, qrSize, qrSize);
         console.log(`QR code placed at (${backX}, ${backY}) on back side`);
 
         // Position in bottom-right corner of front side, moved 5px lower
-        const frontX = frontCanvas.width - qrSize - margin;
-        const frontY = frontCanvas.height - qrSize - margin + 5; // Moved 5px lower
-
+        if(currentCardType != "child_identification" && currentCardType != "child_identification_red"){
+          allert(currentCardType)
+          const frontX = frontCanvas.width - qrSize - margin + 10;
+        const frontY = frontCanvas.height - qrSize - margin ; // Moved 5px lower
         frontCtx.drawImage(qrImg, frontX, frontY, qrSize, qrSize);
         console.log(`QR code placed at (${frontX}, ${frontY}) on front side`);
+        }
       }
 
       showSuccessMessage("QR Code added to all card sides with unique URL!");
@@ -2318,7 +2385,7 @@ document.addEventListener("DOMContentLoaded", function () {
     canvasData.qrMargin = margin;
 
     // Position in bottom-right corner
-    const x = canvas.width - qrSize - margin - 150;
+    const x = canvas.width - qrSize - margin - 135;
     let y = canvas.height - qrSize - margin - 30;
 
     // Adjust position based on side
